@@ -1,16 +1,45 @@
 <?php
-header("Content-Type: application/json");
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-$respuesta = [
-    "status" => "ok",
-    "mensaje" => "Simulación exitosa",
-    "tareas" => [
-        ["id" => 1, "titulo" => "Comprar materiales", "categoria" => "Trabajo", "estado" => "Pendiente"],
-        ["id" => 2, "titulo" => "Estudiar para el examen", "categoria" => "Importante", "estado" => "Pendiente"],
-        ["id" => 3, "titulo" => "Lavar la ropa", "categoria" => "Personal", "estado" => "Completada"]
-    ]
-];
+require_once "../Modelo/conexion.php";
+require_once "../Modelo/tareaModelo.php";
 
-echo json_encode($respuesta);
-?>
+$tarea = new TareaModelo();
 
+$accion = $_POST['accion'] ?? '';
+
+switch ($accion) {
+
+    case "listar":
+        $datos = $tarea->listarTareas();
+        echo json_encode($datos);
+        break;
+
+    case "agregar":
+        $titulo = $_POST['titulo'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
+        $categoria = $_POST['categoria'] ?? '';
+
+        $resultado = $tarea->agregarTarea($titulo, $descripcion, $categoria);
+        echo $resultado ? "1" : "0";
+        break;
+
+    case "estado":
+        $id = $_POST['id'] ?? 0;
+        $estado = $_POST['estado'] ?? 0;
+
+        $resultado = $tarea->cambiarEstado($id, $estado);
+        echo $resultado ? "1" : "0";
+        break;
+
+    case "eliminar":
+        $id = $_POST['id'] ?? 0;
+
+        $resultado = $tarea->eliminarTarea($id);
+        echo $resultado ? "1" : "0";
+        break;
+
+    default:
+        echo "Acción no válida";
+}
