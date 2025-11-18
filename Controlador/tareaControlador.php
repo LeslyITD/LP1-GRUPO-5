@@ -8,13 +8,13 @@ class TareaControlador {
         ];
     }
     public function agregarTarea($titulo, $categoria) {
-        return true; // Simulación
+        return true;
     }
     public function completarTarea($id) {
-        return true; // Simulación
+        return true; 
     }
     public function eliminarTarea($id) {
-        return true; // Simulación
+        return true; 
     }
 }
 ?>
