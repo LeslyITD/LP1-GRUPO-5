@@ -1,0 +1,59 @@
+<form id="formRegistro">
+    <input type="text" name="nombre" placeholder="Nombre" required>
+    <input type="email" name="email" placeholder="Correo" required>
+    <input type="password" name="password" placeholder="Contraseña" required>
+
+    <select name="rol">
+        <option value="usuario">Usuario</option>
+        <option value="admin">Administrador</option>
+    </select>
+
+    <button type="submit">Registrarme</button>
+
+    <div id="msgRegistro" style="margin-top:10px;"></div>
+</form>
+
+<script>
+    
+document.getElementById("formRegistro").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formulario = document.getElementById("formRegistro");
+    const datos = new FormData(formulario);
+    const msg = document.getElementById("msgRegistro");
+
+    msg.textContent = "Registrando...";
+    msg.style.color = "black";
+
+    try {
+        const req = await fetch("../backend/register.php", {
+            method: "POST",
+            body: datos
+        });
+
+        const res = await req.json();
+
+        if (res.error) {
+            msg.textContent = res.error;
+            msg.style.color = "red";
+            return;
+        }
+
+        msg.textContent = "Registro exitoso ✔";
+        msg.style.color = "green";
+
+        // Redirección según rol
+        setTimeout(() => {
+            if (res.rol === "admin") {
+                window.location.href = "admin_dashboard.html";
+            } else {
+                window.location.href = "tareas.html";
+            }
+        }, 1200);
+
+    } catch (error) {
+        msg.textContent = "Error en el servidor.";
+        msg.style.color = "red";
+    }
+});
+</script>
