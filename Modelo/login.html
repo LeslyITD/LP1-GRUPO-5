@@ -42,7 +42,6 @@ document.getElementById("formRegistro").addEventListener("submit", async functio
         msg.textContent = "Registro exitoso ✔";
         msg.style.color = "green";
 
-        // Redirección según rol
         setTimeout(() => {
             if (res.rol === "admin") {
                 window.location.href = "admin_dashboard.html";
