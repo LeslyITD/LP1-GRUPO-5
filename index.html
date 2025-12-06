@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="contenedor">
+        
+        <h1>📝 Lista de Tareas</h1>
+
+        <!-- Formulario para agregar tarea -->
+        <div class="seccion">
+            <h3>Agregar Nueva Tarea</h3>
+            <form id="form-tarea">
+                <input type="text" id="titulo" placeholder="Escribe tu tarea..." required>
+                <textarea id="descripcion" placeholder="Descripción (opcional)"></textarea>
+                <select id="categoria">
+                    <option value="">Sin categoría</option>
+                </select>
+                <button type="submit">Agregar Tarea</button>
+            </form>
+        </div>
+
+        <!-- Filtros -->
+        <div class="seccion filtros">
+            <button class="btn-filtro activo" data-filtro="todas">Todas</button>
+            <button class="btn-filtro" data-filtro="pendientes">Pendientes</button>
+            <button class="btn-filtro" data-filtro="completadas">Completadas</button>
+            
+            <select id="filtro-categoria">
+                <option value="0">Todas las categorías</option>
+            </select>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="estadisticas">
+            <div class="stat">
+                <span id="total-tareas">0</span>
+                <small>Total</small>
+            </div>
+            <div class="stat">
+                <span id="tareas-pendientes">0</span>
+                <small>Pendientes</small>
+            </div>
+            <div class="stat">
+                <span id="tareas-completadas">0</span>
+                <small>Completadas</small>
+            </div>
+        </div>
+
+        <!-- Lista de tareas -->
+        <div id="lista-tareas">
+            <p>Cargando tareas...</p>
+        </div>
+
+    </div>
+
+    <!-- Modal para editar -->
+    <div id="modal" class="modal">
+        <div class="modal-contenido">
+            <h3>Editar Tarea</h3>
+            <form id="form-editar">
+                <input type="hidden" id="editar-id">
+                <input type="text" id="editar-titulo" required>
+                <textarea id="editar-descripcion"></textarea>
+                <select id="editar-categoria">
+                    <option value="">Sin categoría</option>
+                </select>
+                <div class="modal-botones">
+                    <button type="button" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
