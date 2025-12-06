@@ -1,0 +1,74 @@
+-- =============================================
+-- Script para crear la base de datos de Lista de Tareas
+-- Ejecutar en MySQL Workbench
+-- =============================================
+
+-- Crear la base de datos
+CREATE DATABASE IF NOT EXISTS tarea_lp;
+
+-- Usar la base de datos
+USE tarea_lp;
+
+-- =============================================
+-- Tabla de categorías
+-- =============================================
+CREATE TABLE IF NOT EXISTS categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    color VARCHAR(7) DEFAULT '#6c757d',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================
+-- Tabla de tareas
+-- =============================================
+CREATE TABLE IF NOT EXISTS tareas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    categoria_id INT,
+    completada BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
+);
+
+-- =============================================
+-- Datos de prueba - Categorías
+-- =============================================
+INSERT INTO categorias (nombre, color) VALUES 
+('Trabajo', '#007bff'),
+('Personal', '#28a745'),
+('Importante', '#dc3545'),
+('Estudio', '#ffc107'),
+('Hogar', '#17a2b8');
+
+-- =============================================
+-- Datos de prueba - Tareas
+-- =============================================
+INSERT INTO tareas (titulo, descripcion, categoria_id, completada) VALUES 
+('Revisar correos electrónicos', 'Revisar y responder correos pendientes del día', 1, FALSE),
+('Completar informe mensual', 'Preparar el informe de ventas del mes de noviembre', 1, FALSE),
+('Comprar víveres', 'Leche, pan, frutas, verduras y carne', 5, TRUE),
+('Estudiar para el examen', 'Repasar capítulos 5 al 8 del libro de programación', 4, FALSE),
+('Llamar al médico', 'Agendar cita de control anual', 2, FALSE),
+('Pagar servicios', 'Luz, agua, internet y teléfono', 3, TRUE),
+('Hacer ejercicio', 'Rutina de cardio 30 minutos', 2, FALSE),
+('Reunión con el equipo', 'Revisar avances del proyecto web', 1, FALSE),
+('Limpiar la casa', 'Limpieza general de fin de semana', 5, FALSE),
+('Entregar tarea de base de datos', 'Subir el proyecto de la lista de tareas a GitHub', 4, FALSE);
+
+-- =============================================
+-- Consulta de verificación
+-- =============================================
+SELECT 
+    t.id,
+    t.titulo,
+    t.descripcion,
+    c.nombre AS categoria,
+    c.color,
+    CASE WHEN t.completada = 1 THEN 'Sí' ELSE 'No' END AS completada,
+    t.created_at
+FROM tareas t
+LEFT JOIN categorias c ON t.categoria_id = c.id
+ORDER BY t.created_at DESC;
